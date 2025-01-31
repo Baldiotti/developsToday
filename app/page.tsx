@@ -1,4 +1,4 @@
-import { HomePage } from '@/src/features/HomePage/HomePage';
+import { HomePage } from '@/components/login-form';
 
 export default function Home() {
   return (

@@ -1,4 +1,4 @@
-import { Card } from '@/src/shared/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { ToastHandler } from '../ToastHandler/ToastHandler';
 
 interface ApiResponse {

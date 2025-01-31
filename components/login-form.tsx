@@ -1,13 +1,13 @@
 'use client';
 
-import { cn } from '@/src/shared/utils';
+import { cn } from '@/lib/utils';
 import { DevelopsTodayIcon } from '@/src/assets/DevelopsTodayIcon';
 import { Combobox } from '@/src/features/Combobox/Combobox';
 import { useHttpClient } from '@/src/hooks/http-hook';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import { Card } from '@/src/shared/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 const MODEL_YEAR = [
   { label: '2015', value: '2015' },

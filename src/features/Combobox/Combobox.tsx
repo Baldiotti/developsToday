@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-import { Button } from '@/src/shared/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -11,13 +11,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/src/shared/components/ui/command';
+} from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/src/shared/components/ui/popover';
-import { cn } from '@/src/shared/utils';
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface ComboboxType {
   data: { label: string; value: string }[];
