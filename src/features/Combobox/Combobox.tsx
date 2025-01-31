@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/shared/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -11,13 +11,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
+} from '@/src/shared/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from '@/src/shared/components/ui/popover';
+import { cn } from '@/src/shared/utils';
 
 interface ComboboxType {
   data: { label: string; value: string }[];
@@ -25,7 +25,7 @@ interface ComboboxType {
   setValue: (value: string) => void;
 }
 
-export function ComboboxDemo({ fieldLabel, data, setValue }: ComboboxType) {
+export function Combobox({ fieldLabel, data, setValue }: ComboboxType) {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
 
@@ -43,7 +43,7 @@ export function ComboboxDemo({ fieldLabel, data, setValue }: ComboboxType) {
         >
           {selectedValue
             ? data.find((dataItem) => dataItem.value === selectedValue)?.label
-            : 'Select framework...'}
+            : `Select ${fieldLabel.toLowerCase()}...`}
           <ChevronsUpDown className="opacity-50 ml-auto" />
         </Button>
       </PopoverTrigger>
@@ -51,7 +51,7 @@ export function ComboboxDemo({ fieldLabel, data, setValue }: ComboboxType) {
         <Command>
           <CommandInput placeholder="Search framework..." className="h-9" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No {fieldLabel.toLowerCase()} found.</CommandEmpty>
             <CommandGroup>
               {data.map((dataItem) => (
                 <CommandItem

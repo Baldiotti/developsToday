@@ -1,50 +1,55 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
+import { cn } from '@/src/shared/utils';
 import { DevelopsTodayIcon } from '@/src/assets/DevelopsTodayIcon';
-import { ComboboxDemo } from '@/src/features/FilterPage/Combobox';
+import { Combobox } from '@/src/features/Combobox/Combobox';
 import { useHttpClient } from '@/src/hooks/http-hook';
 import { useEffect, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { Card } from '@/src/shared/components/ui/card';
 
-const FormSchema = z.object({
-  vehicleMake: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  modelYear: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-});
+const MODEL_YEAR = [
+  { label: '2015', value: '2015' },
+  { label: '2016', value: '2016' },
+  { label: '2017', value: '2017' },
+  { label: '2018', value: '2018' },
+  { label: '2019', value: '2019' },
+  { label: '2020', value: '2020' },
+  { label: '2021', value: '2021' },
+  { label: '2022', value: '2022' },
+  { label: '2023', value: '2023' },
+  { label: '2024', value: '2024' },
+  { label: '2025', value: '2025' },
+];
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+export function HomePage({ className, ...props }: React.ComponentProps<'div'>) {
+  const { toast } = useToast();
   const { sendRequest } = useHttpClient();
   const [make, setMake] = useState('');
   const [year, setYear] = useState('');
   const [vehicleMakes, setVehicleMakes] = useState<
     { MakeId: number; MakeName: string }[]
   >([]);
+  const fetchURL = process.env.NEXT_PUBLIC_GET_MAKES_FOR_VEHICLE_TYPE_URL;
 
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const responseData = await sendRequest(
-          `https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`
-        );
+        if (!fetchURL) throw new Error('No URL provided');
+        const responseData = await sendRequest(fetchURL);
         setVehicleMakes(responseData.Results);
-        console.log(responseData);
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (err) {}
+      } catch (err) {
+        toast({
+          variant: 'destructive',
+          title: 'Error fetching vehicle makes',
+          description: 'Something went wrong, please try again!',
+        });
+      }
     };
     fetchPlaces();
-  }, [sendRequest]);
+  }, [fetchURL, sendRequest, toast]);
 
   const parsedVehicleData =
     vehicleMakes &&
@@ -52,20 +57,6 @@ export function LoginForm({
       value: `${item.MakeId}`,
       label: item.MakeName,
     }));
-
-  const MODEL_YEAR = [
-    { label: '2015', value: '2015' },
-    { label: '2016', value: '2016' },
-    { label: '2017', value: '2017' },
-    { label: '2018', value: '2018' },
-    { label: '2019', value: '2019' },
-    { label: '2020', value: '2020' },
-    { label: '2021', value: '2021' },
-    { label: '2022', value: '2022' },
-    { label: '2023', value: '2023' },
-    { label: '2024', value: '2024' },
-    { label: '2025', value: '2025' },
-  ];
 
   const handleChangeMake = (value: string) => {
     setMake(value);
@@ -88,14 +79,14 @@ export function LoginForm({
           </div>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col">
-              <ComboboxDemo
+              <Combobox
                 setValue={handleChangeMake}
                 fieldLabel="Vehicle Make"
                 data={parsedVehicleData}
               />
             </div>
             <div className="flex flex-col">
-              <ComboboxDemo
+              <Combobox
                 setValue={handleChangeYear}
                 fieldLabel="Model Year"
                 data={MODEL_YEAR}
